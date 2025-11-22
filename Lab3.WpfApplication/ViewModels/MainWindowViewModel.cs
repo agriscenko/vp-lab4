@@ -34,9 +34,7 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
 
     public void Load()
     {
-        _departments = _db.Departments
-            .Where(d => d.IsActive)
-            .ToArray();
+        _departments = _db.Departments.ToArray();
         LoadDepartmentFloors();
     }
 
@@ -58,7 +56,7 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
     {
         if (SelectedDepartment == null)
         {
-            Employees = [];
+            Employees = new List<Employee>();
             return;
         }
 
@@ -112,18 +110,16 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
 
-    private bool _showInactiveDepartments;
+    public enum HiringFilter { Any, Yes, No }
 
-    public bool ShowInactiveDepartments
+    private HiringFilter _hiringStatus;
+    public HiringFilter HiringStatus
     {
-        get => _showInactiveDepartments;
+        get => _hiringStatus;
         set
         {
-            if (_showInactiveDepartments != value)
-            {
-                _showInactiveDepartments = value;
-                OnPropertyChanged();
-            }
+            _hiringStatus = value;
+            OnPropertyChanged();
         }
     }
 
@@ -141,9 +137,19 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
             query = query.Where(d => d.FloorNumber == SelectedDepartmentFloor.Value);
         }
 
-        if (ShowInactiveDepartments)
+        switch (HiringStatus)
         {
-            query = query.Where(d => !d.IsActive);
+            case HiringFilter.Yes:
+                query = query.Where(d => d.IsHiring);
+                break;
+
+            case HiringFilter.No:
+                query = query.Where(d => !d.IsHiring);
+                break;
+
+            case HiringFilter.Any:
+            default:
+                break;
         }
 
         Departments = query.ToArray();
@@ -153,8 +159,8 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
     {
         SearchDepartmentName = string.Empty;
         SelectedDepartmentFloor = null;
-        ShowInactiveDepartments = false;
-        Employees = [];
+        HiringStatus = HiringFilter.Any;
+        Employees = new List<Employee>();
 
         FilterData();
     }

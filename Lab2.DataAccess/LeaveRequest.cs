@@ -12,24 +12,24 @@ public class LeaveRequest
     public required string Type { get; set; }
 
     [Required]
-    [DataType(DataType.Date)]
-    public required DateTime StartDate { get; set; }
+    [DataType(DataType.DateTime)]
+    public required DateTime StartDateTime { get; set; }
 
     [Required]
-    [DataType(DataType.Date)]
-    public required DateTime EndDate { get; set; }
+    [DataType(DataType.DateTime)]
+    public required DateTime EndDateTime { get; set; }
 
     [Required]
-    [DataType(DataType.Date)]
-    public required DateTime RequestDate { get; set; }
+    [DataType(DataType.DateTime)]
+    public required DateTime RequestDateTime { get; set; }
 
     [StringLength(200)]
     public string? Comments { get; set; }
 
     public int? ApprovedById { get; set; }
 
-    [DataType(DataType.Date)]
-    public DateTime? ApprovalDate { get; set; }
+    [DataType(DataType.DateTime)]
+    public DateTime? ApprovalDateTime { get; set; }
 
     [StringLength(200)]
     public string? ApprovalComments { get; set; }

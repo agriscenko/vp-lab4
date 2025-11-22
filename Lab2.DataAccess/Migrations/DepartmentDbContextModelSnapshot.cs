@@ -30,6 +30,11 @@ namespace Lab2.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -41,10 +46,10 @@ namespace Lab2.DataAccess.Migrations
                     b.Property<int>("FloorNumber")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsHiring")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("LastAuditDate")
+                    b.Property<DateTime?>("LastAuditDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -55,9 +60,6 @@ namespace Lab2.DataAccess.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -72,24 +74,38 @@ namespace Lab2.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsOnLeave")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("PerformanceScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
                         .IsRequired()
@@ -118,7 +134,7 @@ namespace Lab2.DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime?>("ApprovalDate")
+                    b.Property<DateTime?>("ApprovalDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("ApprovedById")
@@ -131,13 +147,13 @@ namespace Lab2.DataAccess.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("EndDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("RequestDate")
+                    b.Property<DateTime>("RequestDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Type")

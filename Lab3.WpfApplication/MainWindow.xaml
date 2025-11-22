@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab3.WpfApplication"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:converters="clr-namespace:Lab3.WpfApplication.Converters"
         xmlns:viewModels="clr-namespace:Lab3.WpfApplication.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+    </Window.Resources>
     <Window.DataContext>
         <viewModels:MainWindowViewModel />
     </Window.DataContext>
@@ -25,11 +29,20 @@
                           ItemsSource="{Binding DepartmentFloors}"
                           SelectedItem="{Binding SelectedDepartmentFloor, Mode=TwoWay}"
                           Margin="0 0 10 0"/>
-                <CheckBox x:Name="ChkShowInactive"
-                    VerticalAlignment="Center"
-                          IsChecked="{Binding ShowInactiveDepartments, Mode=TwoWay}"
-                          Content="Radīt neaktīvas nodaļas"
-                          Margin="0 0 10 0"/>
+                <Label VerticalAlignment="Center">Ir vakances</Label>
+                <StackPanel Orientation="Horizontal" DataContext="{Binding}" Margin="0 0 10 0" VerticalAlignment="Center">
+                    <RadioButton Content="Jebkurš"
+                                 IsChecked="{Binding HiringStatus, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Any}"
+                                 VerticalAlignment="Center"
+                                 Margin="0 0 5 0" />
+                    <RadioButton Content="Ir"
+                                 IsChecked="{Binding HiringStatus, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Yes}"
+                                 VerticalAlignment="Center"
+                                 Margin="0 0 5 0" />
+                    <RadioButton Content="Nav"
+                                 IsChecked="{Binding HiringStatus, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=No}"
+                                 VerticalAlignment="Center"/>
+                </StackPanel>
                 <Button x:Name="BtnSearch"
                         Command="{Binding SearchCommand}"
                         Margin="0 0 10 0"
@@ -48,12 +61,14 @@
                       SelectedItem="{Binding SelectedDepartment, Mode=TwoWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}" />
-                    <DataGridTextColumn Header="Nosaukums" Width="150" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Nosaukums" Width="140" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Kods" Width="40" Binding="{Binding Code}" />
                     <DataGridTextColumn Header="Stāvs" Width="50" Binding="{Binding FloorNumber}" />
                     <DataGridTextColumn Header="Tālruņa Nr." Width="100" Binding="{Binding PhoneNumber}" />
                     <DataGridTextColumn Header="E-pasts" Width="150" Binding="{Binding Email}" />
-                    <DataGridTextColumn Header="Reitings" Width="60" Binding="{Binding Rating}" />
-                    <DataGridCheckBoxColumn Header="Statuss" Width="50" Binding="{Binding IsActive}" />
+                    <DataGridCheckBoxColumn Header="Ir vakances" Width="70" Binding="{Binding IsHiring}" />
+                    <DataGridTextColumn Header="Pēdējais audits" Width="120" Binding="{Binding LastAuditDateTime}" />
+                    <DataGridTextColumn Header="Apraksts" Width="250" Binding="{Binding Description}" />
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -71,11 +86,15 @@
                       IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}" />
-                    <DataGridTextColumn Header="Vārds" Width="150" Binding="{Binding FirstName}" />
-                    <DataGridTextColumn Header="Uzvārds" Width="150" Binding="{Binding LastName}" />
-                    <DataGridTextColumn Header="Amats" Width="150" Binding="{Binding Position}" />
-                    <DataGridTextColumn Header="Alga" Width="60" Binding="{Binding Salary}" />
-                    <DataGridCheckBoxColumn Header="Statuss" Width="50" Binding="{Binding IsActive}" />
+                    <DataGridTextColumn Header="Vārds" Width="100" Binding="{Binding FirstName}" />
+                    <DataGridTextColumn Header="Uzvārds" Width="100" Binding="{Binding LastName}" />
+                    <DataGridTextColumn Header="Dzimšanas datums" Width="120" Binding="{Binding DateOfBirth}" />
+                    <DataGridTextColumn Header="Tālruņa Nr." Width="100" Binding="{Binding PhoneNumber}" />
+                    <DataGridTextColumn Header="E-pasts" Width="180" Binding="{Binding Email}" />
+                    <DataGridTextColumn Header="Amats" Width="180" Binding="{Binding Position}" />
+                    <DataGridTextColumn Header="Pieņemts darbā" Width="100" Binding="{Binding HireDate}" />
+                    <DataGridTextColumn Header="Veiktspēja" Width="70" Binding="{Binding PerformanceScore}" />
+                    <DataGridCheckBoxColumn Header="Atvaļinājumā" Width="80" Binding="{Binding IsOnLeave}" />
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
