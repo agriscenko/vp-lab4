@@ -49,6 +49,12 @@ public class DepartmentRepositoryService : IDepartmentRepository
 
         existingDepartment.Name = department.Name;
         existingDepartment.Code = department.Code;
+        existingDepartment.FloorNumber = department.FloorNumber;
+        existingDepartment.PhoneNumber = department.PhoneNumber;
+        existingDepartment.Email = department.Email;
+        existingDepartment.IsHiring = department.IsHiring;
+        existingDepartment.LastAuditDateTime = department.LastAuditDateTime;
+        existingDepartment.Description = department.Description;
 
         _db.SaveChanges();
 
