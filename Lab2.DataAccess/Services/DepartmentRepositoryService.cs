@@ -84,4 +84,121 @@ public class DepartmentRepositoryService : IDepartmentRepository
 
         return employees.ToArray();
     }
+
+    public Employee GetEmployeeById(int employeeId)
+    {
+        var employee = _db.Employees.FirstOrDefault(e => e.Id == employeeId);
+
+        if (employee == null)
+        {
+            throw new ArgumentException("Employee not found.");
+        }
+
+        return employee;
+    }
+
+    public int AddEmployee(Employee employee)
+    {
+        _db.Employees.Add(employee);
+        _db.SaveChanges();
+
+        return employee.Id;
+    }
+
+    public Employee UpdateEmployee(Employee employee)
+    {
+        var existingEmployee = _db.Employees.FirstOrDefault(e => e.Id == employee.Id);
+
+        if (existingEmployee == null)
+        {
+            throw new ArgumentException("Employee not found.");
+        }
+
+        existingEmployee.FirstName = employee.FirstName;
+        existingEmployee.LastName = employee.LastName;
+        existingEmployee.DateOfBirth = employee.DateOfBirth;
+        existingEmployee.PhoneNumber = employee.PhoneNumber;
+        existingEmployee.Email = employee.Email;
+        existingEmployee.Position = employee.Position;
+        existingEmployee.HireDate = employee.HireDate;
+        existingEmployee.Salary = employee.Salary;
+        existingEmployee.PerformanceScore = employee.PerformanceScore;
+        existingEmployee.IsOnLeave = employee.IsOnLeave;
+        existingEmployee.DepartmentId = employee.DepartmentId;
+
+        _db.SaveChanges();
+
+        return existingEmployee;
+    }
+
+    public void DeleteEmployee(int employeeId)
+    {
+        var existingEmployee = _db.Employees.FirstOrDefault(e => e.Id == employeeId);
+
+        if (existingEmployee == null)
+        {
+            throw new ArgumentException("Employee not found.");
+        }
+
+        _db.Employees.Remove(existingEmployee);
+        _db.SaveChanges();
+    }
+
+
+    public LeaveRequest GetLeaveRequestById(int leaveRequestId)
+    {
+        var leaveRequest = _db.LeaveRequests.FirstOrDefault(lr => lr.Id == leaveRequestId);
+
+        if (leaveRequest == null)
+        {
+            throw new ArgumentException("Leave request not found.");
+        }
+
+        return leaveRequest;
+    }
+
+    public int AddLeaveRequest(LeaveRequest leaveRequest)
+    {
+        _db.LeaveRequests.Add(leaveRequest);
+        _db.SaveChanges();
+
+        return leaveRequest.Id;
+    }
+
+    public LeaveRequest UpdateLeaveRequest(LeaveRequest leaveRequest)
+    {
+        var existingLeaveRequest = _db.LeaveRequests.FirstOrDefault(lr => lr.Id == leaveRequest.Id);
+
+        if (existingLeaveRequest == null)
+        {
+            throw new ArgumentException("Leave request not found.");
+        }
+
+        existingLeaveRequest.Type = leaveRequest.Type;
+        existingLeaveRequest.StartDateTime = leaveRequest.StartDateTime;
+        existingLeaveRequest.EndDateTime = leaveRequest.EndDateTime;
+        existingLeaveRequest.RequestDateTime = leaveRequest.RequestDateTime;
+        existingLeaveRequest.Comments = leaveRequest.Comments;
+        existingLeaveRequest.ApprovedById = leaveRequest.ApprovedById;
+        existingLeaveRequest.ApprovalDateTime = leaveRequest.ApprovalDateTime;
+        existingLeaveRequest.ApprovalComments = leaveRequest.ApprovalComments;
+        existingLeaveRequest.EmployeeId = leaveRequest.EmployeeId;
+
+        _db.SaveChanges();
+
+        return existingLeaveRequest;
+    }
+
+    public void DeleteLeaveRequest(int leaveRequestId)
+    {
+        var existingLeaveRequest = _db.LeaveRequests.FirstOrDefault(lr => lr.Id == leaveRequestId);
+
+        if (existingLeaveRequest == null)
+        {
+            throw new ArgumentException("Leave request not found.");
+        }
+
+        _db.LeaveRequests.Remove(existingLeaveRequest);
+        _db.SaveChanges();
+    }
 }
