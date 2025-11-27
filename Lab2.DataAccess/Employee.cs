@@ -43,7 +43,9 @@ public class Employee
 
     public bool IsOnLeave { get; set; } = false;
 
-    public required Department Department { get; set; }
+    //public required Department Department { get; set; }
+
+    public int DepartmentId { get; set; }
 
     public List<LeaveRequest> LeaveRequests { get; set; } = new();
 }

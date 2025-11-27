@@ -1,4 +1,5 @@
 ﻿using Lab2.DataAccess;
+using Lab2.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lab4.WebAPI.Controllers;
@@ -7,65 +8,95 @@ namespace Lab4.WebAPI.Controllers;
 [ApiController]
 public class DepartmentController : ControllerBase
 {
-    private readonly DepartmentDbContext _db;
+    private readonly IDepartmentRepository _repo;
 
-    public DepartmentController()
+    public DepartmentController(IDepartmentRepository repo)
     {
-        _db = new DepartmentDbContext();
+        _repo = repo;
     }
 
     [HttpGet]
     public Department[] GetDepartments()
     {
-        var data = _db.Departments.ToArray();
+        var data = _repo.GetAll();
 
-        return data;
+        return data.ToArray();
     }
 
-    [HttpGet("{id}")]
-    public Department GetDepartment(int id)
+    [HttpGet]
+    [Route("{departmentId}")]
+    public IActionResult GetDepartment(int departmentId)
     {
-        var data = _db.Departments.FirstOrDefault(d => d.Id == id);
+        try
+        {
+            var department = _repo.GetById(departmentId);
 
-        return data;
+            return Ok(department);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet]
+    [Route("{departmentId}/Employees")]
+    public IActionResult GetEmployees(int departmentId)
+    {
+        try
+        {
+            var employees = _repo.GetEmployees(departmentId);
+
+            return Ok(employees);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpPost]
-    public void Post([FromBody] Department department)
+    public IActionResult PostDepartment(Department department)
     {
-        _db.Departments.Add(department);
-        _db.SaveChanges();
+        var id = _repo.Add(department);
+
+        return Created($"api/Department/{id}", id);
     }
 
-    [HttpDelete("{id}")]
-    public void DeleteDepartment(int id)
+    [HttpPut]
+    [Route("{departmentId}")]
+    public IActionResult PutDepartment(Department department, int departmentId)
     {
-        var data = _db.Departments.FirstOrDefault(d => d.Id == id);
-
-        if (data != null)
+        if (department.Id != departmentId)
         {
-            _db.Departments.Remove(data);
-            _db.SaveChanges();
+            return BadRequest();
+        }
+
+        try
+        {
+            var d = _repo.Update(department);
+
+            return Ok(d);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
         }
     }
 
-    [HttpPut("{id}")]
-    public void UpdateDepartment([FromBody] Department department, int id)
+    [HttpDelete]
+    [Route("{departmentId}")]
+    public IActionResult DeleteDepartment(int departmentId)
     {
-        var existingDepartment = _db.Departments.FirstOrDefault(d => d.Id == id);
-
-        if (existingDepartment != null)
+        try
         {
-            existingDepartment.Name = department.Name;
-            existingDepartment.Code = department.Code;
-            existingDepartment.FloorNumber = department.FloorNumber;
-            existingDepartment.PhoneNumber = department.PhoneNumber;
-            existingDepartment.Email = department.Email;
-            existingDepartment.IsHiring = department.IsHiring;
-            existingDepartment.LastAuditDateTime = department.LastAuditDateTime;
-            existingDepartment.Description = department.Description;
-        }
+            _repo.Delete(departmentId);
 
-        _db.SaveChanges();
+            return Ok();
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
     }
 }

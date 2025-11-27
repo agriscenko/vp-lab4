@@ -34,5 +34,7 @@ public class LeaveRequest
     [StringLength(200)]
     public string? ApprovalComments { get; set; }
 
-    public required Employee Employee { get; set; }
+    //public required Employee Employee { get; set; }
+
+    public int EmployeeId { get; set; }
 }

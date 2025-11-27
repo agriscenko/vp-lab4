@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Lab2.DataAccess.Interfaces;
+﻿using Lab2.DataAccess.Interfaces;
 
 namespace Lab2.DataAccess.Services;
 
@@ -76,13 +75,13 @@ public class DepartmentRepositoryService : IDepartmentRepository
 
     public IEnumerable<Employee> GetEmployees(int departmentId)
     {
-        var department = _db.Departments.Include(d => d.Employees).FirstOrDefault(d => d.Id == departmentId);
+        var employees = _db.Employees.Where(e => e.DepartmentId == departmentId);
 
-        if (department == null)
+        if (!employees.Any())
         {
             throw new ArgumentException("Department not found.");
         }
 
-        return department.Employees.ToArray();
+        return employees.ToArray();
     }
 }
