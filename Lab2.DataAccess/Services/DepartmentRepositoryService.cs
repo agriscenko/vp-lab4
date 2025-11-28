@@ -12,17 +12,11 @@ public class DepartmentRepositoryService : IDepartmentRepository
         _db.Database.EnsureCreated();
     }
 
+    // Department
+
     public IEnumerable<Department> GetAll()
     {
         return _db.Departments.ToList();
-    }
-
-    public int Add(Department department)
-    {
-        _db.Departments.Add(department);
-        _db.SaveChanges();
-
-        return department.Id;
     }
 
     public Department GetById(int departmentId)
@@ -35,6 +29,14 @@ public class DepartmentRepositoryService : IDepartmentRepository
         }
 
         return department;
+    }
+
+    public int Add(Department department)
+    {
+        _db.Departments.Add(department);
+        _db.SaveChanges();
+
+        return department.Id;
     }
 
     public Department Update(Department department)
@@ -84,6 +86,8 @@ public class DepartmentRepositoryService : IDepartmentRepository
 
         return employees.ToArray();
     }
+
+    // Employee
 
     public Employee GetEmployeeById(int employeeId)
     {
@@ -144,6 +148,19 @@ public class DepartmentRepositoryService : IDepartmentRepository
         _db.SaveChanges();
     }
 
+    public IEnumerable<LeaveRequest> GetEmployeeLeaveRequests(int employeeId)
+    {
+        var leaveRequests = _db.LeaveRequests.Where(lr => lr.EmployeeId == employeeId);
+
+        if (!leaveRequests.Any())
+        {
+            throw new ArgumentException("Employee not found.");
+        }
+
+        return leaveRequests.ToArray();
+    }
+
+    // Leave request
 
     public LeaveRequest GetLeaveRequestById(int leaveRequestId)
     {

@@ -2,17 +2,21 @@
 
 public interface IDepartmentRepository
 {
+    // Department
+
     IEnumerable<Department> GetAll();
 
-    int Add(Department department);
-
     Department GetById(int departmentId);
+
+    int Add(Department department);
 
     Department Update(Department department);
 
     void Delete(int departmentId);
 
     IEnumerable<Employee> GetEmployees(int departmentId);
+
+    // Employee
 
     Employee GetEmployeeById(int employeeId);
 
@@ -21,6 +25,10 @@ public interface IDepartmentRepository
     Employee UpdateEmployee(Employee employee);
 
     void DeleteEmployee(int employeeId);
+
+    IEnumerable<LeaveRequest> GetEmployeeLeaveRequests(int employeeId);
+
+    // Leave request
 
     LeaveRequest GetLeaveRequestById(int leaveRequestId);
 

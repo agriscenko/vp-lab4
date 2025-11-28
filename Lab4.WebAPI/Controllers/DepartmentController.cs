@@ -39,22 +39,6 @@ public class DepartmentController : ControllerBase
         }
     }
 
-    [HttpGet]
-    [Route("{departmentId}/Employees")]
-    public IActionResult GetEmployees(int departmentId)
-    {
-        try
-        {
-            var employees = _repo.GetEmployees(departmentId);
-
-            return Ok(employees);
-        }
-        catch (ArgumentException)
-        {
-            return NotFound();
-        }
-    }
-
     [HttpPost]
     public IActionResult PostDepartment(Department department)
     {
@@ -93,6 +77,22 @@ public class DepartmentController : ControllerBase
             _repo.Delete(departmentId);
 
             return Ok();
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet]
+    [Route("{departmentId}/Employees")]
+    public IActionResult GetEmployees(int departmentId)
+    {
+        try
+        {
+            var employees = _repo.GetEmployees(departmentId);
+
+            return Ok(employees);
         }
         catch (ArgumentException)
         {
