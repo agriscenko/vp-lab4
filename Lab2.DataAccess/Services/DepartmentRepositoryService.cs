@@ -31,6 +31,42 @@ public class DepartmentRepositoryService : IDepartmentRepository
         return department;
     }
 
+    public IEnumerable<Department> GetByName(string departmentName)
+    {
+        var departments = _db.Departments.Where(d => d.Name.ToLower().Contains(departmentName.ToLower()));
+
+        if (!departments.Any())
+        {
+            throw new ArgumentException("Departments not found.");
+        }
+
+        return departments.ToArray();
+    }
+
+    public IEnumerable<Department> GetByFloorNumber(int departmentFloorNumber)
+    {
+        var departments = _db.Departments.Where(d => d.FloorNumber == departmentFloorNumber);
+
+        if (!departments.Any())
+        {
+            throw new ArgumentException("Departments not found.");
+        }
+
+        return departments.ToArray();
+    }
+
+    public IEnumerable<Department> GetByIsHiring(bool departmentIsHiring)
+    {
+        var departments = _db.Departments.Where(d => d.IsHiring == departmentIsHiring);
+
+        if (!departments.Any())
+        {
+            throw new ArgumentException("Departments not found.");
+        }
+
+        return departments.ToArray();
+    }
+
     public int Add(Department department)
     {
         _db.Departments.Add(department);
@@ -89,6 +125,11 @@ public class DepartmentRepositoryService : IDepartmentRepository
 
     // Employee
 
+    public IEnumerable<Employee> GetAllEmployees()
+    {
+        return _db.Employees.ToList();
+    }
+
     public Employee GetEmployeeById(int employeeId)
     {
         var employee = _db.Employees.FirstOrDefault(e => e.Id == employeeId);
@@ -99,6 +140,18 @@ public class DepartmentRepositoryService : IDepartmentRepository
         }
 
         return employee;
+    }
+
+    public IEnumerable<Employee> GetEmployeesByFirstName(string employeeFirstName)
+    {
+        var employees = _db.Employees.Where(e => e.FirstName.ToLower().Contains(employeeFirstName.ToLower()));
+
+        if (!employees.Any())
+        {
+            throw new ArgumentException("Employees not found.");
+        }
+
+        return employees.ToArray();
     }
 
     public int AddEmployee(Employee employee)
@@ -162,6 +215,11 @@ public class DepartmentRepositoryService : IDepartmentRepository
 
     // Leave request
 
+    public IEnumerable<LeaveRequest> GetAllLeaveRequests()
+    {
+        return _db.LeaveRequests.ToList();
+    }
+
     public LeaveRequest GetLeaveRequestById(int leaveRequestId)
     {
         var leaveRequest = _db.LeaveRequests.FirstOrDefault(lr => lr.Id == leaveRequestId);
@@ -172,6 +230,18 @@ public class DepartmentRepositoryService : IDepartmentRepository
         }
 
         return leaveRequest;
+    }
+
+    public IEnumerable<LeaveRequest> GetLeaveRequestsByType(string leaveRequestType)
+    {
+        var leaveRequests = _db.LeaveRequests.Where(lr => lr.Type.ToLower().Contains(leaveRequestType.ToLower()));
+
+        if (!leaveRequests.Any())
+        {
+            throw new ArgumentException("Leave requests not found.");
+        }
+
+        return leaveRequests.ToArray();
     }
 
     public int AddLeaveRequest(LeaveRequest leaveRequest)

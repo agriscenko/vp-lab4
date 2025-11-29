@@ -45,7 +45,8 @@ public class Employee
 
     //public required Department Department { get; set; }
 
-    public int DepartmentId { get; set; }
+    [Required]
+    public required int DepartmentId { get; set; }
 
     public List<LeaveRequest> LeaveRequests { get; set; } = new();
 }

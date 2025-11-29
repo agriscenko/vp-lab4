@@ -16,6 +16,14 @@ public class LeaveRequestController : ControllerBase
     }
 
     [HttpGet]
+    public LeaveRequest[] GetLeaveRequests()
+    {
+        var data = _repo.GetAllLeaveRequests();
+
+        return data.ToArray();
+    }
+
+    [HttpGet]
     [Route("{leaveRequestId}")]
     public IActionResult GetLeaveRequest(int leaveRequestId)
     {
@@ -24,6 +32,22 @@ public class LeaveRequestController : ControllerBase
             var leaveRequest = _repo.GetLeaveRequestById(leaveRequestId);
 
             return Ok(leaveRequest);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet]
+    [Route("Type/{leaveRequestType}")]
+    public IActionResult GetleaveRequestTypeByType(string leaveRequestType)
+    {
+        try
+        {
+            var leaveRequests = _repo.GetLeaveRequestsByType(leaveRequestType);
+
+            return Ok(leaveRequests);
         }
         catch (ArgumentException)
         {

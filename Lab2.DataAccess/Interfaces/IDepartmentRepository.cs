@@ -8,6 +8,12 @@ public interface IDepartmentRepository
 
     Department GetById(int departmentId);
 
+    IEnumerable<Department> GetByName(string departmentName);
+
+    IEnumerable<Department> GetByFloorNumber(int floorNumber);
+
+    IEnumerable<Department> GetByIsHiring(bool isHiring);
+
     int Add(Department department);
 
     Department Update(Department department);
@@ -18,7 +24,11 @@ public interface IDepartmentRepository
 
     // Employee
 
+    IEnumerable<Employee> GetAllEmployees();
+
     Employee GetEmployeeById(int employeeId);
+
+    IEnumerable<Employee> GetEmployeesByFirstName(string employeeFirstName);
 
     int AddEmployee(Employee employee);
 
@@ -30,7 +40,11 @@ public interface IDepartmentRepository
 
     // Leave request
 
+    IEnumerable<LeaveRequest> GetAllLeaveRequests();
+
     LeaveRequest GetLeaveRequestById(int leaveRequestId);
+
+    IEnumerable<LeaveRequest> GetLeaveRequestsByType(string leaveRequestType);
 
     int AddLeaveRequest(LeaveRequest leaveRequest);
 

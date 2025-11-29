@@ -16,6 +16,14 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpGet]
+    public Employee[] GetEmployees()
+    {
+        var data = _repo.GetAllEmployees();
+
+        return data.ToArray();
+    }
+
+    [HttpGet]
     [Route("{employeeId}")]
     public IActionResult GetEmployee(int employeeId)
     {
@@ -24,6 +32,22 @@ public class EmployeeController : ControllerBase
             var employee = _repo.GetEmployeeById(employeeId);
 
             return Ok(employee);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet]
+    [Route("FirstName/{employeeFirstName}")]
+    public IActionResult GetEmployeesByFirstName(string employeeFirstName)
+    {
+        try
+        {
+            var employees = _repo.GetEmployeesByFirstName(employeeFirstName);
+
+            return Ok(employees);
         }
         catch (ArgumentException)
         {

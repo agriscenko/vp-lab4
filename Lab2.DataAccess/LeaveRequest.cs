@@ -36,5 +36,6 @@ public class LeaveRequest
 
     //public required Employee Employee { get; set; }
 
-    public int EmployeeId { get; set; }
+    [Required]
+    public required int EmployeeId { get; set; }
 }

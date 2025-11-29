@@ -39,6 +39,54 @@ public class DepartmentController : ControllerBase
         }
     }
 
+    [HttpGet]
+    [Route("Name/{departmentName}")]
+    public IActionResult GetDepartmentsByName(string departmentName)
+    {
+        try
+        {
+            var departments = _repo.GetByName(departmentName);
+
+            return Ok(departments);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet]
+    [Route("FloorNumber/{departmentFloorNumber}")]
+    public IActionResult GetDepartmentsByFloorNumber(int departmentFloorNumber)
+    {
+        try
+        {
+            var departments = _repo.GetByFloorNumber(departmentFloorNumber);
+
+            return Ok(departments);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet]
+    [Route("IsHiring/{departmentIsHiring}")]
+    public IActionResult GetDepartmentsByIsHiring(bool departmentIsHiring)
+    {
+        try
+        {
+            var departments = _repo.GetByIsHiring(departmentIsHiring);
+
+            return Ok(departments);
+        }
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
+    }
+
     [HttpPost]
     public IActionResult PostDepartment(Department department)
     {
